@@ -1,4 +1,4 @@
-defmodule Kokeplata do
+defmodule ButtonStuff do
   @moduledoc """
   A bunch o' little titbits of code that may (or may not) make the elevator lab slightly more survivable
   """
