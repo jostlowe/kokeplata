@@ -34,6 +34,6 @@ defmodule NetworkStuff do
   """
 
   def ip_to_string ip do
-    :inet.ntoa ip
+    :inet.ntoa(ip) |> to_string()
   end
 end
