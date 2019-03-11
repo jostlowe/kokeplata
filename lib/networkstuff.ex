@@ -36,4 +36,39 @@ defmodule NetworkStuff do
   def ip_to_string ip do
     :inet.ntoa(ip) |> to_string()
   end
+
+
+
+  @doc """
+  Returns all nodes in the current cluster. Returns a list of nodes or an error message
+  ## Examples
+      iex> NetworkStuff.all_nodes
+      [:'heis@10.100.23.253', :'heis@10.100.23.226']
+      iex> NetworkStuff.all_nodes
+      {:error, :node_not_running}
+  """
+
+  def all_nodes do
+    case [Node.self | Node.list] do
+      [:'nonode@nohost'] -> {:error, :node_not_running}
+      nodes -> nodes
+    end
+  end
+
+
+
+  @doc """
+  boots a node with a specified tick time. node_name sets the node name before @. The IP-address is
+  automatically imported
+      iex> NetworkStuff.boot_node "frank"
+      {:ok, #PID<0.12.2>}
+      iex(frank@10.100.23.253)> _
+  """
+
+  def boot_node(node_name, tick_time \\ 15000) do
+    ip = get_my_ip() |> ip_to_string()
+    full_name = node_name <> "@" <> ip
+    Node.start(String.to_atom(full_name), :longnames, tick_time)
+  end
+
 end
