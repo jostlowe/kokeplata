@@ -1,3 +1,11 @@
+defmodule ElevatorState do
+  defstruct floor: nil, direction: nil
+end
+
+defmodule ElevatorOrder do
+  defstruct floor: nil, type: nil
+end
+
 defmodule ButtonStuff do
   @moduledoc """
   A bunch o' little titbits of code that may (or may not) make the elevator lab slightly more survivable
@@ -23,10 +31,12 @@ defmodule ButtonStuff do
   Returns a list of tuples on the from {button_type, floor}
 
   ## Examples
-      iex> Kokeplata.get_all_button_types(:cab, 3)
-      [cab: 0, cab: 1, cab: 2, cab: 3]
       iex> Kokeplata.get_all_button_types(:hall_up, 3)
-      [hall_up: 0, hall_up: 1, hall_up: 2]
+      [
+      %ElevatorOrder{floor: 0, type: :hall_up}, 
+      %ElevatorOrder{floor: 1, type: :hall_up}, 
+      %ElevatorOrder{floor: 2, type: :hall_up}, 
+      ]
   """
 
   def get_buttons_of_type(button_type, top_floor) do
@@ -35,7 +45,7 @@ defmodule ButtonStuff do
       :hall_down -> 1..top_floor
       :cab -> 0..top_floor
     end
-    floor_list |> Enum.map(fn floor -> {button_type, floor} end)
+    floor_list |> Enum.map(fn floor -> %ElevatorOrder{floor: floor, type: button_type} end)
   end
 
 
@@ -47,16 +57,16 @@ defmodule ButtonStuff do
   ## Examples
       iex> Kokeplata.get_all_buttons(3)
       [
-        hall_up: 0,
-        hall_up: 1,
-        hall_up: 2,
-        hall_down: 1,
-        hall_down: 2,
-        hall_down: 3,
-        cab: 0,
-        cab: 1,
-        cab: 2,
-        cab: 3
+      %ElevatorOrder{floor: 0, type: :hall_up}, 
+      %ElevatorOrder{floor: 1, type: :hall_up}, 
+      %ElevatorOrder{floor: 2, type: :hall_up}, 
+      %ElevatorOrder{floor: 1, type: :hall_down}, 
+      %ElevatorOrder{floor: 2, type: :hall_down}, 
+      %ElevatorOrder{floor: 3, type: :hall_down}, 
+      %ElevatorOrder{floor: 0, type: :cab}, 
+      %ElevatorOrder{floor: 1, type: :cab}, 
+      %ElevatorOrder{floor: 2, type: :cab}, 
+      %ElevatorOrder{floor: 3, type: :cab}, 
       ]
   """
 
